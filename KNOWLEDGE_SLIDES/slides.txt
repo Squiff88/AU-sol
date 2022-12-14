@@ -1,0 +1,12 @@
+Crypto hash functions:
+
+- https://docs.google.com/presentation/d/e/2PACX-1vS8uFYWDOWjitlYdZYejLNv7q2DWVzgA98J3pUdpBXPPpHB9aS7vriM-FISSUHu4IROjX-fIXPCD0I7/pub?start=false&loop=false&delayms=3000#slide=id.g124a3cd5416_2_154
+
+Crypto encryption history
+- https://docs.google.com/presentation/d/e/2PACX-1vSUqk6Uvnole2hTr9r7-UBcvmPquLhMNa_qPHL26BoVCk0v5j2EvsY2UyO6n2JbB7OfxJVArXlBPiAG/pub?start=false&loop=false&delayms=3000#slide=id.g124a3cd5416_2_154
+
+PoW mining explained
+- https://docs.google.com/presentation/d/1HKZ1l_8XAuj4N_6MRFVn155tnigFKNkiZNWw9GujP_4/edit#slide=id.p
+
+Blockchain Architecture
+- https://docs.google.com/presentation/d/1-FgRVeAHxCMfcH5YAMj8Qpk2gmN3IacVVvncIbVfauo/edit#slide=id.g124a3cd5416_2_154
