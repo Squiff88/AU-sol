@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { generateThreePKs } from "./scripts/generateKeys";
 import server from "./server";
 
 function Transfer({ address, setBalance }) {
-  const PKs = generateThreePKs();
-
-  console.log(PKs, 'private keys maina > ');
-
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
+  const [nonce, setNonce] = useState(0);
 
   const setValue = (setter) => (evt) => setter(evt.target.value);
 
@@ -22,8 +18,10 @@ function Transfer({ address, setBalance }) {
         sender: address,
         amount: parseInt(sendAmount),
         recipient,
+        nonce,
       });
       setBalance(balance);
+      setNonce((prevNonce) => prevNonce + 1);
     } catch (ex) {
       alert(ex.response.data.message);
     }
@@ -32,7 +30,8 @@ function Transfer({ address, setBalance }) {
   return (
     <form className="container transfer" onSubmit={transfer}>
       <h1>Send Transaction</h1>
-
+      {address}
+      address
       <label>
         Send Amount
         <input
@@ -41,7 +40,6 @@ function Transfer({ address, setBalance }) {
           onChange={setValue(setSendAmount)}
         ></input>
       </label>
-
       <label>
         Recipient
         <input
@@ -50,7 +48,6 @@ function Transfer({ address, setBalance }) {
           onChange={setValue(setRecipient)}
         ></input>
       </label>
-
       <input type="submit" className="button" value="Transfer" />
     </form>
   );

@@ -56,6 +56,7 @@ const execute = async () => {
   );
 
   function getWalletAddressFromPublicKey(publicKey) {
+    console.log(publicKey, "public key maina ...");
     const firstByteRemoved = publicKey.slice(1);
     const hashRestOfPublicKey = keccak256(firstByteRemoved);
     const addressFromPublicKey = hashRestOfPublicKey.slice(-20);
