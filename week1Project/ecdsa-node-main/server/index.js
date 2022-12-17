@@ -5,7 +5,11 @@ const { generateThreePKs } = require("./scripts/generate");
 const port = 3042;
 const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak");
-const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
+const {
+  toHex,
+  utf8ToBytes,
+  hexToBytes,
+} = require("ethereum-cryptography/utils");
 const underscore = require("lodash");
 
 app.use(cors());
@@ -51,6 +55,8 @@ app.get("/wallets", (_, res) => {
     return entry;
   });
 
+  console.log(data, "user data maina");
+
   res.send(duplicateData);
 });
 
@@ -60,16 +66,27 @@ app.get("/balance/:address", (req, res) => {
   res.send({ balance });
 });
 
-app.post("/send", (req, res) => {
-  const { sender, recipient, amount, nonce } = req.body;
+app.post("/send", async (req, res) => {
+  const { sender, recipient, amount, nonce, signTxn } = req.body;
 
   setInitialBalance(sender);
   setInitialBalance(recipient);
 
-  const messageHash = keccak256(utf8ToBytes(recipient + amount + nonce));
-  // const signMessage = secp.sign(messageHash, )
+  const [signature, recoveryBit] = signTxn;
+
+  const msgIntoBytes = utf8ToBytes(recipient + amount + JSON.stringify(nonce));
+  const hashedBytes = keccak256(msgIntoBytes);
+
+  const publicKey = await secp.recoverPublicKey(
+    toHex(hashedBytes),
+    Uint8Array.from(Object.values(signature)),
+    recoveryBit
+  );
+
+  console.log(toHex(publicKey), "public main ? ? ?? ");
 
   if (balances[sender] < amount) {
+    console.log(balances, "balances balances ? ? ?? ");
     res.status(400).send({ message: "Not enough funds!" });
   } else {
     balances[sender] -= amount;
