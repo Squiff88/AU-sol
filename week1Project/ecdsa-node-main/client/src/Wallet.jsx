@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import server from "./server";
 
-// Generate key pairs
-// Sign a transaction signarure
-// For signature data use message, value and nonce to hash it all
-// Send it to server for verification
-// On the server verify the transaction signature
-
 const styles = { textDecoration: "underline", cursor: "pointer" };
 
 function Wallet({ address, setAddress, balance, setBalance }) {

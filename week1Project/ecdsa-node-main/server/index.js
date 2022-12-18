@@ -1,15 +1,11 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { generateThreePKs } = require("./scripts/generate");
+const { generateData } = require("./scripts/generate");
 const port = 3042;
 const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak");
-const {
-  toHex,
-  utf8ToBytes,
-  hexToBytes,
-} = require("ethereum-cryptography/utils");
+const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
 const underscore = require("lodash");
 
 app.use(cors());
@@ -35,18 +31,23 @@ const data = {
 };
 
 app.get("/wallets", (_, res) => {
-  const { pairKey1, pairKey2, pairKey3 } = generateThreePKs();
+  // Generate user data
+  const { pairKey1, pairKey2, pairKey3 } = generateData();
 
+  // Assign generated data to a local variable
   data.user1 = { ...pairKey1 };
   data.user2 = { ...pairKey2 };
   data.user3 = { ...pairKey3 };
 
+  // Assign the amount the user wallets
   balances[data.user1.wallet] = 100;
   balances[data.user2.wallet] = 50;
   balances[data.user3.wallet] = 75;
 
+  // Create a deep copy of user data
   const duplicateData = underscore.cloneDeep(data);
 
+  // Remove the private keys from the variable that is going to be send to the client
   Object.entries(duplicateData).map((entry) => {
     if (entry[1].privateKey) {
       entry[1].privateKey = null;
@@ -55,7 +56,8 @@ app.get("/wallets", (_, res) => {
     return entry;
   });
 
-  console.log(data, "user data maina");
+  // Take the private key from the console to provide it in the Frontend
+  console.log(data, "user data");
 
   res.send(duplicateData);
 });
@@ -73,17 +75,24 @@ app.post("/send", async (req, res) => {
   setInitialBalance(recipient);
 
   const [signature, recoveryBit] = signTxn;
+  const formattedSignature = Uint8Array.from(Object.values(signature));
 
   const msgIntoBytes = utf8ToBytes(recipient + amount + JSON.stringify(nonce));
-  const hashedBytes = keccak256(msgIntoBytes);
+  const hashedMsg = toHex(keccak256(msgIntoBytes));
 
+  // Retrieve the public key in order to verify the Txn
   const publicKey = await secp.recoverPublicKey(
-    toHex(hashedBytes),
-    Uint8Array.from(Object.values(signature)),
+    hashedMsg,
+    formattedSignature,
     recoveryBit
   );
 
-  console.log(toHex(publicKey), "public main ? ? ?? ");
+  // Verify the txn
+  const verifyTxn = secp.verify(formattedSignature, hashedMsg, publicKey);
+
+  if (!verifyTxn) {
+    res.status(400).send({ message: "Revert transaction" });
+  }
 
   if (balances[sender] < amount) {
     console.log(balances, "balances balances ? ? ?? ");

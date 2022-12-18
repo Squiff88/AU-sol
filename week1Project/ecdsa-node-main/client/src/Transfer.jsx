@@ -1,7 +1,7 @@
 import { useState } from "react";
 import server from "./server";
 import { keccak256 } from "ethereum-cryptography/keccak";
-import { toHex, utf8ToBytes } from "ethereum-cryptography/utils";
+import { utf8ToBytes } from "ethereum-cryptography/utils";
 import * as secp from "ethereum-cryptography/secp256k1";
 
 function Transfer({ address, setBalance }) {
@@ -15,18 +15,16 @@ function Transfer({ address, setBalance }) {
     evt.preventDefault();
 
     const privKey = await prompt("Enter your private key");
-
+    // Hash the information about the transaction
     const messageHash = keccak256(
       utf8ToBytes(recipient + sendAmount + JSON.stringify(nonce))
     );
 
-    console.log(privKey, "priv key here ...");
     if (privKey) {
+      // Sign the transaction
       const signTxn = await secp.sign(messageHash, privKey, {
         recovered: true,
       });
-
-      console.log(signTxn, "signTxn ....");
 
       try {
         const {
@@ -40,6 +38,8 @@ function Transfer({ address, setBalance }) {
         });
         setBalance(balance);
         setNonce((prevNonce) => prevNonce + 1);
+        setRecipient("");
+        setSendAmount("");
       } catch (ex) {
         alert(ex.response.data.message);
       }
@@ -49,8 +49,7 @@ function Transfer({ address, setBalance }) {
   return (
     <form className="container transfer" onSubmit={transfer}>
       <h1>Send Transaction</h1>
-      {address}
-      address
+      Sender address : <b>{address}</b>
       <label>
         Send Amount
         <input

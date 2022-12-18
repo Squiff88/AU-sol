@@ -2,13 +2,10 @@ const secp = require("ethereum-cryptography/secp256k1");
 const { keccak256 } = require("ethereum-cryptography/keccak");
 const { toHex, utf8ToBytes } = require("ethereum-cryptography/utils");
 
-const generateThreePKs = () => {
+const generateData = () => {
   const privateKey1 = toHex(secp.utils.randomPrivateKey());
   const publicKey1 = toHex(secp.getPublicKey(privateKey1));
-  console.log(publicKey1, "publicKey1 main > ? ?");
   const wallet1 = toHex(keccak256(utf8ToBytes(publicKey1).slice(1)).slice(-20));
-
-  console.log(wallet1, "wallet main > ? ?");
 
   const privateKey2 = toHex(secp.utils.randomPrivateKey());
   const publicKey2 = toHex(secp.getPublicKey(privateKey2));
@@ -37,4 +34,4 @@ const generateThreePKs = () => {
   };
 };
 
-module.exports = { generateThreePKs };
+module.exports = { generateData };
