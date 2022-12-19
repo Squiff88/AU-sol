@@ -38,7 +38,7 @@ function Wallet({ address, setAddress, balance, setBalance }) {
       setBalance(0);
     }
   }
-
+  console.log(address, "addres maina >??");
   return (
     <div className="container wallet">
       <h1>Your Wallet</h1>
@@ -65,11 +65,10 @@ function Wallet({ address, setAddress, balance, setBalance }) {
         Wallet Address
         <input
           placeholder="Type an address, for example: 0x1"
-          value={address}
+          value={address.length > 0 ? address : "0x000000000000000000000"}
           onChange={onChange}
         ></input>
       </label>
-
       <div className="balance">Balance: {balance}</div>
     </div>
   );
