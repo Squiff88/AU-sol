@@ -1,11 +1,9 @@
 const TrieNode = require("./TrieNode");
 
 function changeValue(target, path, value) {
-  let thisTarget = JSON.parse(JSON.stringify(target));
   for (let idx = 0; idx < path.length - 1; idx++) {
     if (target[path[idx]] && Object.keys(target[path[idx]]).length > 0) {
       if (target[path[idx]] === value) {
-        console.log("BREAKING UP !!!!");
         break;
       }
 
@@ -60,13 +58,23 @@ class Trie {
     this.keys = [];
   }
 
+  contains(word) {
+    return this.keys.some((key, i) => {
+      if (key[i]) {
+        const letterFromKeys = key[i].filter((letter) => letter !== "children");
+        const joinedLetters = letterFromKeys.join("");
+
+        return joinedLetters === word;
+      }
+      return false;
+    });
+  }
+
   insert(word) {
     const wordCharArr = word.split("");
     const patriciaTrie = this.root;
     const keysLen = this.keys.length;
     const patriciaTrieLen = Object.keys(this.root.children).length;
-
-    console.log(wordCharArr, "wordCharArr ??/");
 
     for (let i = 0; i < wordCharArr.length; i++) {
       // keys.push(wordCharArr[i]);
@@ -94,7 +102,6 @@ class Trie {
         // FIND THE LAST CHILDREN NODE AND ATTACH THE PARTIAL OBJECT THERE
         Object.entries(patriciaTrie).map(([key, val]) => {
           if (key === "children") {
-            // console.log(JSON.stringify(val), 'val .... maina')
             const takePrevKey = [...this.keys[keysLen][keysLen]];
             let sliceIdx = i * 2;
             sliceIdx = sliceIdx === 0 ? 2 : sliceIdx;
