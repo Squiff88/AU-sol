@@ -1,6 +1,9 @@
 const ethers = require("ethers");
 const { utils } = ethers;
-const { Wallet } = ethers;
+const { Wallet, providers } = ethers;
+
+// SHOULD BE IMPLEMENTED !!!
+const { ganacheProvider } = require("./config");
 
 // CREATE WALLETS FROM PRIVATE KEY AND MNEMONIC
 const PRIV_KEY =
@@ -23,11 +26,55 @@ const signaturePromise = wallet1.signTransaction({
   gasLimit: 21000,
 });
 
-// SEND Ether
+// SEND ether with multiple transactions adding NONCE
 async function sendEther({ value, to }) {
   return wallet.sendTransaction({ value, to });
 }
 
-// SEND ether with multiple transactions adding NONCE
+// Get balance of a wallet
+const provider = new providers.Web3Provider(ganacheProvider);
+
+function findMyBalance(privateKey) {
+  const wallet = new Wallet(privateKey, provider);
+
+  return wallet.getBalance();
+  // retrieve the balance, given a private key
+}
+
+// Send multiple txns from a wallet
+
+async function donate(privateKey, charities) {
+  // TODO: donate to charity!
+  const wallet = new Wallet(privateKey, provider);
+
+  const charityEth = utils.parseEther("1.0");
+
+  for (charity of charities) {
+    await wallet.sendTransaction({ value: charityEth, to: charity });
+  }
+}
+
+// Find all addresses that received ETH from a given address
+const blocks = [1, 2, 3];
+async function findEther(address) {
+  const addrArray = [];
+
+  for (block of blocks) {
+    const minedBlock = await provider.getBlockWithTransactions(block);
+
+    if (minedBlock.transactions) {
+      const { transactions } = minedBlock;
+
+      transactions.map((transaction) => {
+        if (transaction.from === address) {
+          addrArray.push(transaction.to);
+        }
+      });
+    }
+  }
+
+  console.log(addrArray, "addrArray ....");
+  return addrArray;
+}
 
 module.exports = signaturePromise;
