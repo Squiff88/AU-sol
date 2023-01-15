@@ -16,11 +16,18 @@ const wallet2 = Wallet.fromMnemonic(mnemonic);
 // Format Wei into ETH
 const oneEthInWei = utils.parseUnits("1", "ether");
 
-// SEND A TRANSACTION
+// SIGN A TRANSACTION
 const signaturePromise = wallet1.signTransaction({
   value: oneEthInWei,
   to: "0xdD0DC6FB59E100ee4fA9900c2088053bBe14DE92",
   gasLimit: 21000,
 });
+
+// SEND Ether
+async function sendEther({ value, to }) {
+  return wallet.sendTransaction({ value, to });
+}
+
+// SEND ether with multiple transactions adding NONCE
 
 module.exports = signaturePromise;
