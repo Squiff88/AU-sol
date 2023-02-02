@@ -1,0 +1,94 @@
+.app {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+  background-image: linear-gradient(to left bottom, #504c81, #606397, #727aac, #8592c2, #99abd7, #98abd8, #98acd9, #97acda, #8194c7, #6d7cb3, #5a65a0, #484f8c);
+}
+
+.container {
+  display: flex;
+  width: 650px;
+  margin-top: 100px;
+}
+
+.section {
+  margin: 25px;
+
+  /* From https://css.glass */
+background: rgba(255, 255, 255, 0.57);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(255, 255, 255, 0.17);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 15px;
+  padding: 5px 10px;
+  height: 275px;
+  overflow-x: auto;
+}
+
+.block-data {
+  padding-bottom: 10px;
+}
+
+p {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 15px;
+  padding: 5px 10px;
+}
+
+.search-wrapper input {
+  padding-bottom: 5px;
+  background-color: whitesmoke;
+}
+
+.search-wrapper > label {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+}
+
+.search-wrapper > input {
+  display: flex;
+  width: 100%;
+  margin-top: 10px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+.search-wrapper > input:focus-visible {
+  border-bottom: 1px solid black;
+  outline: none !important;
+}
+
+
+.list-item {
+  margin-bottom: 15px;
+}
