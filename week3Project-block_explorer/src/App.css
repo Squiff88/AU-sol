@@ -58,6 +58,11 @@ p {
   align-items: flex-start;
   margin-top: 15px;
   padding: 5px 10px;
+  border-radius: 5px;
+
+  -webkit-box-shadow: -7px 10px 24px -7px rgba(0,0,0,0.75);
+  -moz-box-shadow: -7px 10px 24px -7px rgba(0,0,0,0.75);
+  box-shadow: -7px 10px 24px -7px rgba(0,0,0,0.75);
 }
 
 .search-wrapper input {
