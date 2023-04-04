@@ -6,15 +6,7 @@ async function main() {
   // attach to the game
   const game = await hre.ethers.getContractAt(contractName, gameAddr);
 
-  const [signer1, signer2] = await ethers.getSigners();
-
-  // console.log(signer1, "signer");
-
-  // const balance = await ethers.provider.getBalance(signer1.address);
-
-  // console.log(ethers.utils.parseEther(balance.toString()), "balance ");
   await game.giveMeAllowance(100000);
-  // await game.connect(signer2).mint(1000);
   await game.mint(60000);
   const tx = await game.win();
 
