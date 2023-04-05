@@ -67,3 +67,41 @@ contract Contract {
         return filteredNumbers;
     }
 }
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.4;
+
+contract StackClub {
+    address[] members;
+
+    constructor() {
+        members.push(msg.sender);
+    }
+
+    function addMember(address memberAddress) external {
+        require(
+            isMember(msg.sender),
+            "Only members can access this functionality"
+        );
+        members.push(memberAddress);
+    }
+
+    function removeLastMember() public {
+        require(
+            isMember(msg.sender),
+            "Only members can access this functionality"
+        );
+
+        members.pop();
+    }
+
+    function isMember(address checkAddress) public view returns (bool) {
+        bool memberFound = false;
+        for (uint i; i < members.length; i++) {
+            if (members[i] == checkAddress) {
+                memberFound = true;
+            }
+        }
+        return memberFound;
+    }
+}
