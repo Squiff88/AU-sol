@@ -9,7 +9,20 @@ body {
   display: inline-block;
   padding: 40px;
   border: 1px solid #ddd;
-  background-color: #fff;
+  background-color: #D0D6B3;
+}
+.existing-contracts {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  width: auto;
 }
 
 h1 {
@@ -22,7 +35,7 @@ label {
   display: flex;
   flex-direction: column;
   text-transform: uppercase;
-  color: #aaa;
+  color: #201335;
   margin: 20px;
 }
 
@@ -32,7 +45,7 @@ input[type="text"] {
 }
 
 .button {
-  background-color: #f58427;
+  background-color: #4F4789;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -44,10 +57,19 @@ input[type="text"] {
   cursor: pointer;
 }
 
+.contract-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.existing-contract {
+  display: flex;
+}
+
 .existing-contract ul {
   padding: 10px;
   margin: 20px;
-  background-color: #eee;
+  background-color: #C2C1C2;
 }
 
 .existing-contract ul > li {
@@ -67,4 +89,5 @@ input[type="text"] {
 .existing-contract .complete {
   color: #5aa75a;
   text-align: center;
+  font-weight: 600;
 }

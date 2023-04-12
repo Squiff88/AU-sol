@@ -165,9 +165,11 @@ function App() {
         <h1> Existing Contracts </h1>
 
         <div id="container">
-          {escrows.map((escrow) => {
-            return <Escrow key={escrow.address} {...escrow} />;
-          })}
+          <div className="contract-wrapper">
+            {escrows.map((escrow) => {
+              return <Escrow key={escrow.address} {...escrow} />;
+            })}
+          </div>
         </div>
       </div>
     </div>
