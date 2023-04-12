@@ -1,0 +1,16 @@
+html, body {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+#root {
+    width: 100%;
+}
+
+.page-wrapper {
+    display: flex;
+    flex: 1;
+    background-color: lightslategray;
+}
