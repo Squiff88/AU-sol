@@ -1,26 +1,26 @@
-# Decentralized Escrow Application
+# Escrow-Dapp
 
-This is an Escrow Dapp built with [Hardhat](https://hardhat.org/).
+Web3 Escrow manager
 
-## Project Layout
+## Overview of improvements over the base implementation
 
-There are three top-level folders:
+- Goerli ETH testnet deployment
+- Minor Frontend Styling Improvements
+- Value convertion in the Frontend from Wei to ETH
+- Server implementation for persistance of the data
+  - Initially deployed contract via deploy scripts is picked up and displayed by the Frontend
+  - Approve state gets to be persisted across the contracts
+- Additional checks added to the contract itself to ensure the addresses for arbiter , deployer and beneficiary are unique.
+- Test cases are added to cover the improved contract functionality
 
-1. `/app` - contains the front-end application
-2. `/contracts` - contains the solidity contract
-3. `/tests` - contains tests for the solidity contract
+## How to run the project
 
-## Setup
-
-Install dependencies in the top-level directory with `npm install`.
-
-After you have installed hardhat locally, you can use commands to test and compile the contracts, among other things. To learn more about these commands run `npx hardhat help`.
-
-Compile the contracts using `npx hardhat compile`. The artifacts will be placed in the `/app` folder, which will make it available to the front-end. This path configuration can be found in the `hardhat.config.js` file.
-
-## Front-End
-
-`cd` into the `/app` directory and run `npm install`
-
-To run the front-end application run `npm start` from the `/app` directory. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
+- Clone the repo
+- Have prepared a Metamask wallet
+- Have prepared Alchemy API key
+- Add the necessary data in .env file
+- make sure your wallet have enough Goerli ETH ( at least 0.1 )
+- `npm i` at project root directory
+- execute `npx hardhat run --network goerli scripts/deploy.js` to run the deploy script
+- cd & `npm i` at the server directory & `npm run dev`
+- cd & `npm i` at the app directory & `npm start`
