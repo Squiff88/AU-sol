@@ -1,17 +1,18 @@
-const { ethers } = require('hardhat');
-const { expect } = require('chai');
+const { ethers } = require("hardhat");
+const { expect } = require("chai");
 
-describe('Escrow', function () {
+describe("Escrow", function () {
   let contract;
   let depositor;
   let beneficiary;
   let arbiter;
-  const deposit = ethers.utils.parseEther('1');
+  const deposit = ethers.utils.parseEther("1");
   beforeEach(async () => {
     depositor = ethers.provider.getSigner(0);
     beneficiary = ethers.provider.getSigner(1);
     arbiter = ethers.provider.getSigner(2);
-    const Escrow = await ethers.getContractFactory('Escrow');
+
+    const Escrow = await ethers.getContractFactory("Escrow");
     contract = await Escrow.deploy(
       arbiter.getAddress(),
       beneficiary.getAddress(),
@@ -22,19 +23,36 @@ describe('Escrow', function () {
     await contract.deployed();
   });
 
-  it('should be funded initially', async function () {
+  it("should be funded initially", async function () {
     let balance = await ethers.provider.getBalance(contract.address);
     expect(balance).to.eq(deposit);
   });
 
-  describe('after approval from address other than the arbiter', () => {
-    it('should revert', async () => {
+  describe("after approval from address other than the arbiter", () => {
+    it("should revert", async () => {
       await expect(contract.connect(beneficiary).approve()).to.be.reverted;
     });
   });
 
-  describe('after approval from the arbiter', () => {
-    it('should transfer balance to beneficiary', async () => {
+  describe("Arbiter address should be different from depositor", () => {
+    it("should revert if addresses are equal", async () => {
+      const arbiterAddress = await arbiter.getAddress();
+      const depositorAddress = await depositor.getAddress();
+
+      await expect(depositorAddress).not.to.equal(arbiterAddress);
+    });
+  });
+
+  describe("Arbiter address should be different from beneficiary", () => {
+    it("should revert if addresses are equal", async () => {
+      const arbiterAddress = await arbiter.getAddress();
+      const beneficiaryAddress = await beneficiary.getAddress();
+      await expect(beneficiaryAddress).not.to.equal(arbiterAddress);
+    });
+  });
+
+  describe("after approval from the arbiter", () => {
+    it("should transfer balance to beneficiary", async () => {
       const before = await ethers.provider.getBalance(beneficiary.getAddress());
       const approveTxn = await contract.connect(arbiter).approve();
       await approveTxn.wait();

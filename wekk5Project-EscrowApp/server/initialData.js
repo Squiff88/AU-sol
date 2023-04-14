@@ -1,0 +1,1 @@
+{"contractData":{"depositorAddress":"0x6A23Fac2c18BaF39d7b2399A244794b6E81BF93B","arbiterAddress":"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266","beneficiaryAddress":"0x70997970C51812dc3A010C7d01b50e0d17dc79C8","contractAddress":"0x74C17ed5D47D77b7407cfBef32aEB59891EcA4b2","contractValue":{"type":"BigNumber","hex":"0x5af3107a4000"},"approved":false}}

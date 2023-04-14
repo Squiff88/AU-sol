@@ -1,5 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
+const ethers = require("ethers");
 
 const app = express();
 
@@ -11,6 +14,33 @@ app.use(express.json());
 
 const contractData = [];
 
+const content = fs.readFileSync(path.resolve(`${__dirname}/initialData.js`));
+const extractContractData = JSON.parse(content);
+
+const {
+  depositorAddress,
+  contractAddress,
+  arbiterAddress,
+  beneficiaryAddress,
+  contractValue,
+  approved,
+} = extractContractData.contractData;
+
+// Pickup the first deployed contract
+const formatContractValue = ethers.utils.formatUnits(contractValue, "wei");
+
+const escrowDataModel = {};
+escrowDataModel.depositorAddress = depositorAddress;
+escrowDataModel.contractAddress = contractAddress;
+escrowDataModel.arbiterAddress = arbiterAddress;
+escrowDataModel.beneficiaryAddress = beneficiaryAddress;
+escrowDataModel.contractValue = formatContractValue;
+escrowDataModel.id = contractData.length;
+escrowDataModel.approved = approved;
+
+contractData.push(escrowDataModel);
+
+// GET Contracts
 app.get("/contracts", (req, res) => {
   return res.status(200).json({
     contractData,
@@ -18,14 +48,12 @@ app.get("/contracts", (req, res) => {
 });
 
 app.post("/contracts", (req, res) => {
-  console.log(req.params, "req maina >>>");
-  console.log(req.body, "req body >>>");
   const {
     depositorAddress,
     arbiterAddress,
     beneficiaryAddress,
     contractAddress,
-    contractEthValue,
+    contractValue,
     approved,
   } = req.body;
 
@@ -34,8 +62,8 @@ app.post("/contracts", (req, res) => {
     !arbiterAddress ||
     !beneficiaryAddress ||
     !contractAddress ||
-    !contractEthValue ||
-    contractEthValue === 0
+    !contractValue ||
+    contractValue === 0
   ) {
     return res.status(500).json({
       message: "parameters are not valid",
@@ -48,7 +76,7 @@ app.post("/contracts", (req, res) => {
   escrowDataModel.contractAddress = contractAddress;
   escrowDataModel.arbiterAddress = arbiterAddress;
   escrowDataModel.beneficiaryAddress = beneficiaryAddress;
-  escrowDataModel.contractEthValue = contractEthValue;
+  escrowDataModel.contractValue = contractValue;
   escrowDataModel.id = contractData.length;
   escrowDataModel.approved = approved;
 
@@ -60,16 +88,13 @@ app.post("/contracts", (req, res) => {
   });
 });
 
+// PUT Contract to approved state
 app.put("/contracts", (req, res) => {
   const { contractAddress } = req.body;
 
   const findEscrowContract = contractData.filter(
     (contract) => contract.contractAddress === contractAddress
   );
-
-  console.log(contractData, "contractData it ????");
-  console.log(contractAddress, "contractAddress it ????");
-  console.log(findEscrowContract, "found it ????");
 
   if (findEscrowContract.length === 0) {
     return res.status(500).json({

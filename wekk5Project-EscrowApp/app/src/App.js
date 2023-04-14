@@ -73,7 +73,7 @@ function App() {
                   approveContractHandler(attachedContract);
                 }, 200)
               : () => onApproveContractHandler(attachedContract, signer),
-            value: contracts.contractEthValue,
+            value: contracts.contractValue,
           };
         });
 
@@ -115,7 +115,7 @@ function App() {
         arbiterAddress: arbiter,
         beneficiaryAddress: beneficiary,
         contractAddress: escrowContract.address,
-        contractEthValue: valueInWei.toString(),
+        contractValue: valueInWei.toString(),
         approved: isApprovedEscrow,
       };
 
