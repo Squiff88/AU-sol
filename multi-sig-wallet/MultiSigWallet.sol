@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
-
-// import "hardhat/console.sol";
+import "hardhat/console.sol";
 
 contract MultiSig {
     address[] public owners;
@@ -32,6 +31,9 @@ contract MultiSig {
         required = requiredSignatures;
     }
 
+    // Receive ETH in Multi-Sig wallet ( contract )
+    receive() external payable {}
+
     function addTransaction(
         address _beneficiary,
         uint256 value
@@ -44,20 +46,6 @@ contract MultiSig {
 
         // Return the ID of the transaction
         return transactionCount - 1;
-    }
-
-    function confirmTransaction(uint256 transactionId) public {
-        bool isAddressOwner = false;
-
-        for (uint256 i = 0; i < owners.length; i++) {
-            if (owners[i] == msg.sender) {
-                isAddressOwner = true;
-            }
-        }
-
-        require(isAddressOwner, "You are not authorized for this action");
-
-        confirmations[transactionId][msg.sender] = true;
     }
 
     function getConfirmationsCount(
@@ -75,7 +63,46 @@ contract MultiSig {
         return confirmedTransactions;
     }
 
+    function confirmTransaction(uint256 transactionId) public {
+        bool isAddressOwner = false;
+
+        for (uint256 i = 0; i < owners.length; i++) {
+            if (owners[i] == msg.sender) {
+                isAddressOwner = true;
+            }
+        }
+
+        require(isAddressOwner, "You are not authorized for this action");
+
+        confirmations[transactionId][msg.sender] = true;
+
+        if (isConfirmed(transactionId)) {
+            executeTransaction(transactionId);
+        }
+    }
+
     function submitTransaction(address _beneficiary, uint256 value) external {
         confirmTransaction(addTransaction(_beneficiary, value));
+    }
+
+    function isConfirmed(uint256 transactionId) public view returns (bool) {
+        bool transactionIsConfirmed = false;
+        uint256 confirmationCount = getConfirmationsCount(transactionId);
+
+        if (confirmationCount >= required) {
+            transactionIsConfirmed = true;
+        }
+
+        return transactionIsConfirmed;
+    }
+
+    function executeTransaction(uint256 transactionId) public {
+        (bool success, ) = transactions[transactionId].beneficiary.call{
+            value: transactions[transactionId].transactionValue
+        }("");
+
+        require(success, "Transaction failed");
+
+        transactions[transactionId].executed = true;
     }
 }
