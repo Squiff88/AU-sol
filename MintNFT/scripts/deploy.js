@@ -13,7 +13,7 @@ async function main() {
   // update the IPFS CID to be your metadata CID
   await nft.safeMint(
     await signer0.getAddress(),
-    "ipfs://QmVieYNziE6EHKg1VTym13nE4q7ydcds48TmyctZ8mqZjw"
+    "ipfs://QmevYPtX27uxffYBZJ8dHpNijJF5tzGrX1YSNVuog7VX8C"
   );
 
   console.log("NFT Minted!");
@@ -25,3 +25,7 @@ main()
     console.error(error);
     process.exit(1);
   });
+
+
+  
+  // NFT deployed to: 0x9d4A1cc238409F7Ba03c292dA77e11022E4F6d0F

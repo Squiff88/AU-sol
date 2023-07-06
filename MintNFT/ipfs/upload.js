@@ -36,3 +36,8 @@ async function run() {
 }
 
 run();
+
+
+  // path: 'QmevYPtX27uxffYBZJ8dHpNijJF5tzGrX1YSNVuog7VX8C',
+  // cid: CID(QmevYPtX27uxffYBZJ8dHpNijJF5tzGrX1YSNVuog7VX8C),
+  // size: 264
