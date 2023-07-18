@@ -41,6 +41,12 @@ function findMyBalance(privateKey) {
   // retrieve the balance, given a private key
 }
 
+// Find private key from mnemonic
+
+const wallet = ethers.Wallet.fromMnemonic("one two three four");
+
+console.log(wallet.privateKey, "private key maina");
+
 // Send multiple txns from a wallet
 
 async function donate(privateKey, charities) {
